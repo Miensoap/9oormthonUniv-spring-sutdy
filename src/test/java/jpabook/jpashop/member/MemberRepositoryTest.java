@@ -1,7 +1,7 @@
 package jpabook.jpashop.member;
 
 import jpabook.jpashop.domain.member.Member;
-import jpabook.jpashop.MemberRepository;
+import jpabook.jpashop.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ class MemberRepositoryTest {
 
         // when
         Long savedId = memberRepository.save(member);
-        Member findMember = memberRepository.find(savedId);
+        Member findMember = memberRepository.findOne(savedId);
 
         // then
         assertThat(findMember.getId()).isEqualTo(member.getId());

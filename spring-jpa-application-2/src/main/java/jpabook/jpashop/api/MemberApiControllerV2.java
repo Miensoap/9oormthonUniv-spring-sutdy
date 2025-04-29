@@ -1,9 +1,8 @@
-package jpabook.jpashop.api.v2;
+package jpabook.jpashop.api;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
-import jpabook.jpashop.api.v1.MemberApiControllerV1;
-import jpabook.jpashop.api.v1.MemberApiControllerV1.CreateMemberResponse;
+import jpabook.jpashop.api.MemberApiControllerV1.CreateMemberResponse;
 import jpabook.jpashop.domain.Address;
 import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.service.MemberService;

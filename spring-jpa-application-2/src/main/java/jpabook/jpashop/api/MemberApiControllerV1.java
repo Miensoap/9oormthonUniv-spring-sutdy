@@ -1,4 +1,4 @@
-package jpabook.jpashop.api.v1;
+package jpabook.jpashop.api;
 
 import jakarta.validation.Valid;
 import jpabook.jpashop.domain.Member;

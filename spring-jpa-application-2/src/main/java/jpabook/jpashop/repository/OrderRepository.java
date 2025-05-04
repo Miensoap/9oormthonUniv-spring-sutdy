@@ -110,3 +110,29 @@ public class OrderRepository {
                 .getResultList(); // Fetch join 사용
     }
 
+    public List<Order> findAllWithMemberDelivery(int offset, int limit) {
+        return em.createQuery(
+                        "select o from Order o" +
+                                " join fetch o.member m" +
+                                " join fetch o.delivery d", Order.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+
+    public List<Order> findAllWithItem() {
+        return em.createQuery(
+                // JPQL distinct = DB distinct + 같은 id의 엔티티 중복 제거 (order)
+                "select distinct o from Order o" +
+                        " join fetch o.member m" +
+                        " join fetch o.delivery d" +
+                        " join fetch o.orderItems oi" +
+                        " join fetch oi.item i", Order.class
+                // Collection fetch join 사용 -> n번 조인 연산 -> 같은 Order 데이터가 중복 조회됨
+        ).getResultList();
+
+        // 단점 : 페이징 불가 (쿼리에 limit, offset 절이 포함되지 않음), 메모리에서 페이징 처리됨
+        // 2개 이상의 컬렉션 페치 조인은 사용할 수 없다.
+    }
+}
+

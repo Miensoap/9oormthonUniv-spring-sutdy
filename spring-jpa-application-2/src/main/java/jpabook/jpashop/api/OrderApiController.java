@@ -31,7 +31,7 @@ public class OrderApiController {
 
     @GetMapping("/v1/orders")
     public List<Order> 엔티티직접노출() {
-        List<Order> orders = orderRepository.findAllByString(new OrderSearch());
+        List<Order> orders = orderRepository.findAllByQueryDsl(new OrderSearch());
         for (Order order : orders) {
             // 1to1 Lazy 강제 초기화
             order.getMember().getName();

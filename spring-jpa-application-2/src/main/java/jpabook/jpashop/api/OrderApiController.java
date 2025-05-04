@@ -1,17 +1,15 @@
 package jpabook.jpashop.api;
 
-import jpabook.jpashop.domain.Address;
 import jpabook.jpashop.domain.Order;
 import jpabook.jpashop.domain.OrderItem;
-import jpabook.jpashop.domain.OrderStatus;
 import jpabook.jpashop.repository.OrderRepository;
 import jpabook.jpashop.repository.OrderSearch;
 import jpabook.jpashop.repository.order.query.OrderFlatDto;
 import jpabook.jpashop.repository.order.query.OrderItemQueryDto;
 import jpabook.jpashop.repository.order.query.OrderQueryDto;
 import jpabook.jpashop.repository.order.query.OrderQueryRepository;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import jpabook.jpashop.service.query.OrderDto;
+import jpabook.jpashop.service.query.OrderQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +27,7 @@ public class OrderApiController {
 
     private final OrderRepository orderRepository;
     private final OrderQueryRepository orderQueryRepository;
+    private final OrderQueryService orderQueryService;
 
     @GetMapping("/v1/orders")
     public List<Order> 엔티티직접노출() {
@@ -53,55 +52,12 @@ public class OrderApiController {
                 .toList();
     }
 
-    @Getter
-    @AllArgsConstructor
-    public static class OrderDto {
-        private Long orderId;
-        private String name;
-        private String orderDate;
-        private OrderStatus orderStatus;
-        private Address address;
-        private List<OrderItemDto> orderItems;
-
-        public static OrderDto from(Order order) {
-            return new OrderDto(
-                    order.getId(),
-                    order.getMember().getName(),
-                    order.getOrderDate().toString(),
-                    order.getStatus(),
-                    order.getDelivery().getAddress(),
-                    order.getOrderItems().stream()
-                            .map(OrderItemDto::from)
-                            .toList()
-            );
-        }
-    }
-
-    @Getter
-    @AllArgsConstructor
-    public static class OrderItemDto {
-        private String itemName;
-        private int orderPrice;
-        private int count;
-
-        public static OrderItemDto from(OrderItem orderItem) {
-            return new OrderItemDto(
-                    orderItem.getItem().getName(),
-                    orderItem.getOrderPrice(),
-                    orderItem.getCount()
-            );
-        }
-    }
-
     /**
      * 컬렉션 페치 조인으로 쿼리 수 최적화
      */
     @GetMapping("/v3/orders")
     public List<OrderDto> 페치조인최적화() {
-        List<Order> orders = orderRepository.findAllWithItem();
-        return orders.stream()
-                .map(OrderDto::from)
-                .toList();
+        return orderQueryService.ordersV3();
     }
 
     /**

@@ -6,3 +6,6 @@
 - [Hibernate User Guide](https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html)
 - [JUnit5 공식 문서](https://junit.org/junit5/docs/current/user-guide/)
 
+
+### 발표
+- [4/28 HTE](https://github.com/Miensoap/9oormthonUniv-spring-sutdy/issues/1)
